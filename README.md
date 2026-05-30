@@ -35,21 +35,16 @@ https://github.com/user-attachments/assets/515e9443-d3f6-4d14-99b4-6e63cc2b28e0
 
 ##  Project Workflow
 
-- Video(local/youtube urls)
---      ↓
-- Audio Extraction
-  --       ↓
- Transcription( Whisper AI)
- --        ↓ 
- Chunking
-  --      ↓
- Embeddings(Gemini embedding)
-  --       ↓
- ChromaDB
-  --       ↓
- Retriever(mmr)
-    --     ↓  
- Gemini(LLM)
-  ------   ↓
- Answer and cross question 
+```mermaid
+flowchart TD
+    A[Video<br/>Local / YouTube URLs]
+    --> B[Audio Extraction]
+    --> C[Transcription<br/>Groq Whisper]
+    --> D[Chunking]
+    --> E[Gemini Embeddings]
+    --> F[ChromaDB Vector Store]
+    --> G[Retriever<br/>MMR Search]
+    --> H[Gemini 2.5 Flash LLM]
+    --> I[Answer Generation & Follow-up Questions]
+```
   
