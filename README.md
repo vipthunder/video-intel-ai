@@ -39,7 +39,7 @@ https://github.com/user-attachments/assets/515e9443-d3f6-4d14-99b4-6e63cc2b28e0
 flowchart TD
     A[Video<br/>Local / YouTube URLs]
     --> B[Audio Extraction]
-    --> C[Transcription<br/>Groq Whisper]
+    --> C[Transcription<br/>(Groq Whisper)]
     --> D[Chunking]
     --> E[Gemini Embeddings]
     --> F[ChromaDB Vector Store]
