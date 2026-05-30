@@ -51,5 +51,6 @@ flowchart TD
 
 Author
 
-Vipul Singh
-linkedin:https://www.linkedin.com/in/vipul-singh-243700282/
+**Vipul Singh**
+
+linkedin: https://www.linkedin.com/in/vipul-singh-243700282/
