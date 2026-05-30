@@ -27,19 +27,19 @@ An AI-powered platform that transforms local and YouTube videos into searchable 
 ##  Project Workflow
 
 Video
-↓
+->
 Audio Extraction
-↓
+->
 Transcription
-↓
+->
 Chunking
-↓
+->
 Embeddings
-↓
+->
 ChromaDB
-↓
+->
 Retriever
-↓
+->
 Gemini
-↓
-Answer
+->
+Answer and cross question 
