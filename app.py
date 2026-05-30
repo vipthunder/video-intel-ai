@@ -531,6 +531,7 @@ with left_col:
                     st.error(f"Failed to download: {e}")
                     with st.expander("Error details"):
                         st.exception(e)
+            st.info( "Local video uploads are fully supported.YouTube downloads may be restricted in cloud deployments.")
 
             st.success(f"  {total_videos} video(s) processed and ready for Q&A.")
 
