@@ -8,7 +8,6 @@ langchain-huggingface
 langchain-google-genai==2.1.12
 langchain-chroma==0.2.5
 
-
 chromadb==1.0.20
 
 google-generativeai
@@ -19,7 +18,5 @@ yt-dlp
 
 ffmpeg-python==0.2.0
 imageio-ffmpeg
-
-tiktoken==0.11.0
 
 python-dotenv==1.1.1
