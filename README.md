@@ -26,20 +26,20 @@ An AI-powered platform that transforms local and YouTube videos into searchable 
 
 ##  Project Workflow
 
-Video
+Video(local/youtube urls)
 ->
 Audio Extraction
 ->
-Transcription
+Transcription( Whisper AI)
 ->
 Chunking
 ->
-Embeddings
+Embeddings(Gemini embedding)
 ->
 ChromaDB
 ->
-Retriever
+Retriever(mmr)
 ->
-Gemini
+Gemini(LLM)
 ->
 Answer and cross question 
