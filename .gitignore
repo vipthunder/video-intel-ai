@@ -11,8 +11,8 @@ __pycache__/
 # ChromaDB
 chroma_db/
 
-# Temporary Files
+# Temporary Files( save .wav files of uploaded videos)
 temp/
 
-# Uploaded Files
+# Uploaded Files( video folder for uploads to retain the data)
 uploads/
