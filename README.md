@@ -36,8 +36,7 @@ https://github.com/user-attachments/assets/515e9443-d3f6-4d14-99b4-6e63cc2b28e0
 ##  Project Workflow
 
 Video(local/youtube urls)
-->
-Audio Extraction
+->Audio Extraction
 ->
 Transcription( Whisper AI)
 ->
