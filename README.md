@@ -35,19 +35,20 @@ https://github.com/user-attachments/assets/515e9443-d3f6-4d14-99b4-6e63cc2b28e0
 
 ##  Project Workflow
 
-Video(local/youtube urls)
-->Audio Extraction
+- Video(local/youtube urls)
 ->
-Transcription( Whisper AI)
+- Audio Extraction
 ->
-Chunking
+- Transcription( Whisper AI)
 ->
-Embeddings(Gemini embedding)
+- Chunking
 ->
-ChromaDB
+- Embeddings(Gemini embedding)
 ->
-Retriever(mmr)
+- ChromaDB
 ->
-Gemini(LLM)
+- Retriever(mmr)
 ->
-Answer and cross question 
+- Gemini(LLM)
+->
+- Answer and cross question 
