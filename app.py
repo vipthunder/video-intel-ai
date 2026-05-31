@@ -1,4 +1,3 @@
-
 import streamlit as st
 from src.video_processor import save_uploaded_video
 from src.youtube_processor import download_youtube_video
@@ -326,6 +325,8 @@ if "processed_videos" not in st.session_state:
     st.session_state["processed_videos"] = []      # list of video names successfully processed
 if "total_chunks" not in st.session_state:
     st.session_state["total_chunks"] = 0
+if "current_video" not in st.session_state:
+    st.session_state["current_video"] = None
 
 # ── Helper: render a step log ──────────────────────────────────────────────────
 def step_log(steps: list[dict]) -> str:
@@ -369,15 +370,17 @@ def process_video_file(file_path: str, log_placeholder):
     refresh(2, "done")
 
     # Step 3 – vector store
+    # FIX 1: indentation was broken — these lines must be inside the function body
+    # FIX 2: save current_video before creating the vector store
     video_name = file_path.replace("\\", "/").split("/")[-1]
-
-# Save currently active video
     st.session_state["current_video"] = video_name
 
     vector_store = create_vector_store(chunks, video_name)
+    refresh(3, "done")  # FIX 3: refresh(3) was missing entirely — step 3 was never marked done
 
     # Step 4 – retriever
-    retriever = get_retriever(vector_store)
+    # FIX 4: pass current_video so the retriever scopes to the just-processed video
+    retriever = get_retriever(vector_store, current_video=video_name)
     refresh(4, "done")
 
     # Step 5 – RAG chain
@@ -388,7 +391,11 @@ def process_video_file(file_path: str, log_placeholder):
     st.session_state["processed_videos"].append(video_name)
     st.session_state["total_chunks"] += len(chunks)
 
-    return transcript, chunks
+    # FIX 5: transcript is a list of segment dicts; join text fields into a single string
+    # so it can be displayed in st.text_area
+    transcript_text = "\n".join(seg["text"] for seg in transcript)
+
+    return transcript_text, chunks
 
 
 # ═════════════════════
@@ -431,7 +438,7 @@ if processed_count > 0:
 left_col, right_col = st.columns([1.1, 0.9], gap="large")
 
 
-# -----------LEFT — INPUT  --------------------------------       
+# -----------LEFT — INPUT  --------------------------------
 with left_col:
     st.markdown('<span class="section-label"> Video Sources</span>', unsafe_allow_html=True)
 
@@ -478,17 +485,20 @@ with left_col:
                 log_ph = st.empty()
                 try:
                     file_path = save_uploaded_video(video)
-                    transcript, chunks = process_video_file(file_path, log_ph)
+                    transcript_text, chunks = process_video_file(file_path, log_ph)
 
                     with st.expander(f"📄 Transcript — {video.name}"):
-                        st.text_area("", transcript, height=220, label_visibility="collapsed")
+                        # FIX 5 (display side): transcript_text is now a plain string
+                        st.text_area("", transcript_text, height=220, label_visibility="collapsed")
 
                     with st.expander(f"🧩 Chunks preview — {video.name}"):
                         for idx, chunk in enumerate(chunks[:6], 1):
+                            # FIX 6: chunks are dicts with a "text" key, not plain strings
+                            chunk_preview = chunk["text"][:260]
                             st.markdown(
                                 f'<div style="font-size:0.8rem;color:rgba(255,255,255,0.55);'
                                 f'border-left:2px solid #634aff;padding-left:10px;margin-bottom:8px;">'
-                                f'<span style="color:#634aff;font-weight:600;">#{idx}</span>  {chunk[:260]}…</div>',
+                                f'<span style="color:#634aff;font-weight:600;">#{idx}</span>  {chunk_preview}…</div>',
                                 unsafe_allow_html=True,
                             )
                         if len(chunks) > 6:
@@ -510,18 +520,21 @@ with left_col:
                 log_ph = st.empty()
                 try:
                     file_path = download_youtube_video(url)
-                    transcript, chunks = process_video_file(file_path, log_ph)
+                    transcript_text, chunks = process_video_file(file_path, log_ph)
 
                     video_name = file_path.replace("\\", "/").split("/")[-1]
                     with st.expander(f"📄 Transcript — {video_name}"):
-                        st.text_area("", transcript, height=220, label_visibility="collapsed")
+                        # FIX 5 (display side): transcript_text is now a plain string
+                        st.text_area("", transcript_text, height=220, label_visibility="collapsed")
 
                     with st.expander(f"🧩 Chunks — {video_name}"):
                         for idx, chunk in enumerate(chunks[:6], 1):
+                            # FIX 6: chunks are dicts with a "text" key, not plain strings
+                            chunk_preview = chunk["text"][:260]
                             st.markdown(
                                 f'<div style="font-size:0.8rem;color:rgba(255,255,255,0.55);'
                                 f'border-left:2px solid #14c896;padding-left:10px;margin-bottom:8px;">'
-                                f'<span style="color:#14c896;font-weight:600;">#{idx}</span>  {chunk[:260]}…</div>',
+                                f'<span style="color:#14c896;font-weight:600;">#{idx}</span>  {chunk_preview}…</div>',
                                 unsafe_allow_html=True,
                             )
                         if len(chunks) > 6:
@@ -531,7 +544,8 @@ with left_col:
                     st.error(f"Failed to download: {e}")
                     with st.expander("Error details"):
                         st.exception(e)
-            st.info( "Local video uploads are fully supported. YouTube downloads may be restricted in cloud deployments due to youtube policy.")
+
+            st.info("Local video uploads are fully supported. YouTube downloads may be restricted in cloud deployments due to youtube policy.")
 
             st.success(f"  {total_videos} video(s) processed and ready for Q&A.")
 
