@@ -12,6 +12,14 @@ client = Groq(
 def transcribe_audio(audio_path):
     """
     Transcribe audio using Groq Whisper API.
+    Returns:
+        [
+            {
+                "text": "...",
+                "start": 0.0,
+                "end": 5.2
+            }
+        ]
     """
 
     with open(audio_path, "rb") as audio_file:
@@ -20,18 +28,24 @@ def transcribe_audio(audio_path):
             file=audio_file,
             model="whisper-large-v3",
             temperature=0.0,
-            response_format = "verbose_json"
+            response_format="verbose_json"
         )
 
     segments = []
 
     for segment in transcription.segments:
+
+        text = segment["text"].strip()
+
+        if not text:
+            continue
+
         segments.append(
             {
-                "text": segment["text"],
-                "start": segment["start"],
-                "end": segment["end"]
+                "text": text,
+                "start": float(segment["start"]),
+                "end": float(segment["end"])
             }
         )
-        
+
     return segments
