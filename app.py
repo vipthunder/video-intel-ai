@@ -377,7 +377,7 @@ def process_video_file(file_path: str, log_placeholder):
     vector_store = create_vector_store(chunks, video_name)
 
     # Step 4 – retriever
-    retriever = get_retriever(vector_store, video_name)
+    retriever = get_retriever(vector_store)
     refresh(4, "done")
 
     # Step 5 – RAG chain
