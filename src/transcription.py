@@ -23,4 +23,15 @@ def transcribe_audio(audio_path):
             response_format = "verbose_json"
         )
 
-    return transcription.text
+    segments = []
+
+    for segment in transcription.segments:
+        segments.append(
+            {
+                "text": segment["text"],
+                "start": segment["start"],
+                "end": segment["end"]
+            }
+        )
+        
+    return segments
