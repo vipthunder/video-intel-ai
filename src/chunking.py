@@ -1,6 +1,6 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-def chunk_text(text):
+def chunk_text(segments):
     
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
