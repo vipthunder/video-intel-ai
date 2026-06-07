@@ -13,8 +13,8 @@ def get_retriever(vector_store, current_video=None):
         return vector_store.as_retriever(
             search_type="mmr",
             search_kwargs={
-                "k": 5,
-                "fetch_k": 20,
+                "k": 10,
+                "fetch_k": 50,
                 "filter": {
                     "video_name": current_video
                 }
@@ -25,6 +25,6 @@ def get_retriever(vector_store, current_video=None):
         search_type="mmr",                      # i am using mmr as a retriever
         search_kwargs={
             "k": 20,
-            "fetch_k": 50
+            "fetch_k": 70
         }
     )
